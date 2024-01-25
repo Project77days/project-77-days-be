@@ -1,11 +1,11 @@
 package org.example.domain.task;
 
+import org.example.domain.AggregateRoot;
+
 import java.time.Instant;
-import java.util.UUID;
 
 
-public class Task {
-  private String id;
+public class Task extends AggregateRoot<TaskID> {
   private String name;
   private String description;
   private Boolean statusTask;
@@ -15,8 +15,8 @@ public class Task {
   private Instant deleteTime;
   //private Type type;
 
-  public Task(String id, String name, String description, Boolean statusTask, String value, Instant createdTime, Instant updateTime, Instant deleteTime) {
-    this.id = id;
+  public Task(TaskID id, String name, String description, Boolean statusTask, String value, Instant createdTime, Instant updateTime, Instant deleteTime) {
+    super(id);
     this.name = name;
     this.description = description;
     this.statusTask = false;
@@ -27,12 +27,12 @@ public class Task {
   }
 
   public static Task newTask(String name, String description, String value){
-    final var id = UUID.randomUUID().toString();
+    final var id = TaskID.unique();
     final var now = Instant.now();
     return  new Task(id, name, description, false, value, now, now,null);
   }
 
-  public String getId() {
+  public TaskID getId() {
     return id;
   }
 

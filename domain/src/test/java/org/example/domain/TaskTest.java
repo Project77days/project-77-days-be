@@ -20,5 +20,8 @@ public class TaskTest {
     Assertions.assertEquals(expectedName, actualTasks.getName());
     Assertions.assertEquals(expectedStatusTask, actualTasks.getStatusTask());
     Assertions.assertEquals(expectedValue, actualTasks.getValue());
+    Assertions.assertNotNull(actualTasks.getCreatedTime());
+    Assertions.assertNotNull(actualTasks.getUpdateTime());
+    Assertions.assertNull(actualTasks.getDeleteTime());
   }
 }
