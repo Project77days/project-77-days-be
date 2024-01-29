@@ -1,1 +1,5 @@
 rootProject.name = '77days'
+include 'domain'
+include 'application'
+include 'infrastructure'
+

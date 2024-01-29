@@ -20,10 +20,11 @@ Um app que faz o acompanhamento de restramento de tasks (hábitos) realizados du
 ## 🔨 Arquitetura
 
 - O aplicativo é desenvolvido utilizando uma arquitetura cliente-servidor.
-- O servidor utiliza uma arquitetura RESTful, com uma API para lidar com as solicitações do cliente
+- O servidor utiliza uma arquitetura REST, lidar com as solicitações do cliente via HTTP
 - Persistência de dados no banco MySQL.
 - Arquitetura de desenvolvimento baseada na Clean Arquitecture
-- Desenvolvimento TDD -Test Driven Development
+  - Desaclopar frameworks do  dominio e casos de usos da minha aplicação 
+- Desenvolvimento DDD -Domain Driven Design -> **Modelagem estratégica**
 
 &nbsp;
 
