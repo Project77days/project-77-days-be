@@ -1,18 +1,18 @@
 package org.example.domain.task;
 
 import org.example.domain.AggregateRoot;
+import org.example.domain.validation.ValidationHandler;
 
 import java.time.Instant;
 
-
 public class Task extends AggregateRoot<TaskID> {
-  private String name;
-  private String description;
-  private Boolean statusTask;
-  private String value;
-  private Instant createdTime;
-  private Instant updateTime;
-  private Instant deleteTime;
+  private final String name;
+  private final String description;
+  private final Boolean statusTask;
+  private final String value;
+  private final Instant createdTime;
+  private final Instant updateTime;
+  private final Instant deleteTime;
   //private Type type;
 
   public Task(TaskID id, String name, String description, Boolean statusTask, String value, Instant createdTime, Instant updateTime, Instant deleteTime) {
@@ -30,6 +30,11 @@ public class Task extends AggregateRoot<TaskID> {
     final var id = TaskID.unique();
     final var now = Instant.now();
     return  new Task(id, name, description, false, value, now, now,null);
+  }
+
+  @Override
+  public void validate(ValidationHandler handler) {
+    new  TaskValidator(this, handler).validate();
   }
 
   public TaskID getId() {
