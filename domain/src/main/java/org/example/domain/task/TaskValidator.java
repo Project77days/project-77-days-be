@@ -14,8 +14,25 @@ public class TaskValidator extends Validator {
 
   @Override
   public void validate() {
-    if(this.task.getName() == null){
+    checkNameConstrains();
+  }
+
+  private void checkNameConstrains() {
+    final var taskName = this.task.getName();
+
+    if (taskName == null) {
       this.validationHandler().append(new Error("'name' should be null"));
+      return;
+    }
+
+    if (taskName.isBlank()) {
+      this.validationHandler().append(new Error("'name' should be empty"));
+      return;
+    }
+
+    if (taskName.length() > 255 || taskName.trim().length() < 3  ) {
+      this.validationHandler().append(new Error( "'name' must be between 3 and 255 character"));
+      return;
     }
   }
 }

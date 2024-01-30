@@ -15,7 +15,7 @@ public class Task extends AggregateRoot<TaskID> {
   private final Instant deleteTime;
   //private Type type;
 
-  public Task(TaskID id, String name, String description, Boolean statusTask, String value, Instant createdTime, Instant updateTime, Instant deleteTime) {
+  public Task(TaskID id, String name, String description, String value, Instant createdTime, Instant updateTime, Instant deleteTime) {
     super(id);
     this.name = name;
     this.description = description;
@@ -29,7 +29,7 @@ public class Task extends AggregateRoot<TaskID> {
   public static Task newTask(String name, String description, String value){
     final var id = TaskID.unique();
     final var now = Instant.now();
-    return  new Task(id, name, description, false, value, now, now,null);
+    return  new Task(id, name, description, value, now, now,null);
   }
 
   @Override
