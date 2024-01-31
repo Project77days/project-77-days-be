@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
+
 public class TaskTest {
 
   @Test
@@ -131,6 +133,80 @@ public class TaskTest {
       Task.newTask(expectedName ,expectedDescription, expectedValue);
 
     Assertions.assertNotEquals(actualTasks.getStatusTask(), true);
+  }
 
+  @Test
+  @DisplayName("givenAValidStatusTasksTrue_whenCallNewTaskAndValidate_thenUpdateDate")
+  public void givenAValidStatusTasksTrue_whenCallNewTaskAndValidate_thenUpdateDate() throws InterruptedException {
+    final var expectedName = "ler 10 paginas ";
+    final var expectedDescription = "ler no minimo 10 paginas por dia";
+    final var expectedValue = "10";
+
+    final var  task =
+      Task.newTask(expectedName ,expectedDescription, expectedValue);
+    final var updatedAt = task.getUpdateTime();
+
+    Assertions.assertFalse(task.getStatusTask());
+
+    Thread.sleep(250);
+    final var actualTasks = task.done();
+    final var actualUpdateAt = actualTasks.getUpdateTime();
+
+    Assertions.assertEquals(actualTasks.getStatusTask(), true);
+    Assertions.assertTrue(updatedAt.isBefore(actualUpdateAt));
+    Assertions.assertEquals(expectedName, actualTasks.getName());
+    Assertions.assertEquals(expectedValue, actualTasks.getValue());
+    Assertions.assertNotNull(actualTasks.getCreatedTime());
+    Assertions.assertNull(actualTasks.getDeleteTime());
+  }
+
+
+  @Test
+  @DisplayName("givenAValidStatusTasksFalse_whenCallNewTaskAndValidate_thenUpdateDate")
+  public void givenAValidStatusTasksFalse_whenCallNewTaskAndValidate_thenUpdateDate(){
+    final var expectedName = "ler 10 paginas ";
+    final var expectedDescription = "ler no minimo 10 paginas por dia";
+    final var expectedValue = "10";
+
+    final var  task =
+      Task.newTask(expectedName ,expectedDescription, expectedValue);
+    final var updatedTask = task.done();
+    final var updatedAt = updatedTask.getUpdateTime();
+
+    Assertions.assertTrue(task.getStatusTask());
+
+    final var actualTasks = task.notDone();
+    final var actualUpdateAt = actualTasks.getUpdateTime();
+
+    Assertions.assertFalse(task.getStatusTask());
+    Assertions.assertEquals(actualTasks.getStatusTask(), false);
+    Assertions.assertTrue(updatedAt.isBefore(actualUpdateAt));
+    Assertions.assertEquals(expectedName, actualTasks.getName());
+    Assertions.assertEquals(expectedValue, actualTasks.getValue());
+    Assertions.assertNotNull(actualTasks.getCreatedTime());
+    Assertions.assertNull(actualTasks.getDeleteTime());
+  }
+
+  @Test
+  @DisplayName("givenAValidStatusTasksDelete_whenCallNewTaskAndValidate_thenDeleteDateNotNull")
+  public void givenAValidStatusTasksDelete_whenCallNewTaskAndValidate_thenUpdateDate() throws InterruptedException {
+    final var expectedName = "ler 10 paginas ";
+    final var expectedDescription = "ler no minimo 10 paginas por dia";
+    final var expectedValue = "10";
+
+    final var  task =
+      Task.newTask(expectedName ,expectedDescription, expectedValue);
+    final var updatedAt = task.getUpdateTime();
+
+    Assertions.assertNull(task.getDeleteTime());
+
+    Thread.sleep(250);
+    final var actualTask = task.delete();
+    final var actualUpdateAt = actualTask.getUpdateTime();
+
+    Assertions.assertTrue(updatedAt.isBefore(actualUpdateAt));
+    Assertions.assertNotNull(task.getCreatedTime());
+    Assertions.assertNotNull(task.getUpdateTime());
+    Assertions.assertNotNull(task.getDeleteTime());
   }
 }

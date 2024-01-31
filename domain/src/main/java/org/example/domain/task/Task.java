@@ -6,13 +6,13 @@ import org.example.domain.validation.ValidationHandler;
 import java.time.Instant;
 
 public class Task extends AggregateRoot<TaskID> {
-  private final String name;
-  private final String description;
-  private final Boolean statusTask;
-  private final String value;
-  private final Instant createdTime;
-  private final Instant updateTime;
-  private final Instant deleteTime;
+  private String name;
+  private String description;
+  private Boolean statusTask;
+  private String value;
+  private Instant createdTime;
+  private Instant updateTime;
+  private Instant deleteTime;
   //private Type type;
 
   public Task(TaskID id, String name, String description, String value, Instant createdTime, Instant updateTime, Instant deleteTime) {
@@ -35,6 +35,24 @@ public class Task extends AggregateRoot<TaskID> {
   @Override
   public void validate(ValidationHandler handler) {
     new  TaskValidator(this, handler).validate();
+  }
+
+  public Task done(){
+      this.statusTask = true;
+      this.updateTime = Instant.now();
+      return this;
+  }
+
+  public Task notDone(){
+    this.statusTask = false;
+    this.updateTime = Instant.now();
+    return this;
+  }
+
+  public Task delete(){
+    this.updateTime = Instant.now();
+    this.deleteTime = Instant.now();
+    return this;
   }
 
   public TaskID getId() {

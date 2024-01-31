@@ -5,6 +5,8 @@ import org.example.domain.validation.ValidationHandler;
 import org.example.domain.validation.Validator;
 
 public class TaskValidator extends Validator {
+  public static final int NAME_LENGTH_MAX = 255;
+  public static final int NAME_LENGTH_MIN = 3;
   private final Task task;
 
   public TaskValidator(final Task aTask, ValidationHandler handler) {
@@ -30,7 +32,7 @@ public class TaskValidator extends Validator {
       return;
     }
 
-    if (taskName.length() > 255 || taskName.trim().length() < 3  ) {
+    if (taskName.length() > NAME_LENGTH_MAX || taskName.trim().length() < NAME_LENGTH_MIN) {
       this.validationHandler().append(new Error( "'name' must be between 3 and 255 character"));
       return;
     }
