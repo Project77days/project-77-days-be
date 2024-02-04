@@ -23,12 +23,12 @@ public class TaskValidator extends Validator {
     final var taskName = this.task.getName();
 
     if (taskName == null) {
-      this.validationHandler().append(new Error("'name' should be null"));
+      this.validationHandler().append(new Error("'name' should not be null"));
       return;
     }
 
     if (taskName.isBlank()) {
-      this.validationHandler().append(new Error("'name' should be empty"));
+      this.validationHandler().append(new Error("'name' should not be empty"));
       return;
     }
 

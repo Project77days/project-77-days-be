@@ -33,7 +33,7 @@ public class TaskTest {
   @DisplayName("givenAnInvalidNameNull_whenCallNewTaskAndValidate_thenShouldException")
   public void givenAnInvalidNameNull_whenCallNewTaskAndValidate_thenShouldException(){
     final var expectedErrorCount = 1;
-    final var expectedErrorMessage = "'name' should be null";
+    final var expectedErrorMessage = "'name' should not be null";
     final var expectedDescription = "false";
     final var expectedValue = "10";
 
@@ -51,7 +51,7 @@ public class TaskTest {
   @DisplayName("givenAnInvalidEmptyNull_whenCallNewTaskAndValidate_thenShouldException")
   public void givenAnInvalidEmptyNull_whenCallNewTaskAndValidate_thenShouldException(){
     final var expectedErrorCount = 1;
-    final var expectedErrorMessage = "'name' should be empty";
+    final var expectedErrorMessage = "'name' should not be empty";
     final var expectedDescription = "false";
     final var expectedValue = "10";
 
@@ -216,7 +216,7 @@ public class TaskTest {
 
   @Test
   @DisplayName("givenAValidTask_whenCallUpdate_thenReturnTaskUpdated")
-  public void givenAValidTask_whenCallUpdate_thenReturnTaskUpdated(){
+  public void givenAValidTask_whenCallUpdate_thenReturnTaskUpdated() throws InterruptedException {
     final var expectedName = "ler 10 paginas ";
     final var expectedDescription = "false";
     final var expectedValue = "10";
@@ -225,6 +225,7 @@ public class TaskTest {
 
     Assertions.assertDoesNotThrow(() -> aTask.validate(new ThrowsValidationHandler()));
 
+    Thread.sleep(250);
     final var updateAt = aTask.getUpdateTime();
     final var createAt = aTask.getCreatedTime();
 
