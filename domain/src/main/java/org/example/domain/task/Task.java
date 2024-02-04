@@ -55,6 +55,14 @@ public class Task extends AggregateRoot<TaskID> {
     return this;
   }
 
+  public Task update(String name, String description, String value){
+    this.name = name;
+    this.description = description;
+    this.value = value;
+    this.updateTime = Instant.now();
+    return this;
+  }
+
   public TaskID getId() {
     return id;
   }

@@ -15,7 +15,6 @@ public class TaskTest {
   @DisplayName("givenAValidParams_whenCallNewTask_thenInstantiateATask")
   public void givenAValidParams_whenCallNewTask_thenInstantiateATask(){
     final var expectedName = "ler 10 paginas ";
-    final var expectedStatusTask = false;
     final var expectedDescription = "false";
     final var expectedValue = "10";
 
@@ -24,7 +23,6 @@ public class TaskTest {
     Assertions.assertNotNull(actualTasks);
     Assertions.assertNotNull(actualTasks.getId());
     Assertions.assertEquals(expectedName, actualTasks.getName());
-    Assertions.assertEquals(expectedStatusTask, actualTasks.getStatusTask());
     Assertions.assertEquals(expectedValue, actualTasks.getValue());
     Assertions.assertNotNull(actualTasks.getCreatedTime());
     Assertions.assertNotNull(actualTasks.getUpdateTime());
@@ -35,7 +33,7 @@ public class TaskTest {
   @DisplayName("givenAnInvalidNameNull_whenCallNewTaskAndValidate_thenShouldException")
   public void givenAnInvalidNameNull_whenCallNewTaskAndValidate_thenShouldException(){
     final var expectedErrorCount = 1;
-    final var expectedErrorMessage = "'name' should be null";
+    final var expectedErrorMessage = "'name' should not be null";
     final var expectedDescription = "false";
     final var expectedValue = "10";
 
@@ -53,7 +51,7 @@ public class TaskTest {
   @DisplayName("givenAnInvalidEmptyNull_whenCallNewTaskAndValidate_thenShouldException")
   public void givenAnInvalidEmptyNull_whenCallNewTaskAndValidate_thenShouldException(){
     final var expectedErrorCount = 1;
-    final var expectedErrorMessage = "'name' should be empty";
+    final var expectedErrorMessage = "'name' should not be empty";
     final var expectedDescription = "false";
     final var expectedValue = "10";
 
@@ -132,6 +130,8 @@ public class TaskTest {
     final var actualTasks =
       Task.newTask(expectedName ,expectedDescription, expectedValue);
 
+    Assertions.assertDoesNotThrow(() ->actualTasks.validate(new ThrowsValidationHandler()));
+
     Assertions.assertNotEquals(actualTasks.getStatusTask(), true);
   }
 
@@ -147,6 +147,7 @@ public class TaskTest {
     final var updatedAt = task.getUpdateTime();
 
     Assertions.assertFalse(task.getStatusTask());
+    Assertions.assertDoesNotThrow(() -> task.validate(new ThrowsValidationHandler()));
 
     Thread.sleep(250);
     final var actualTasks = task.done();
@@ -174,6 +175,7 @@ public class TaskTest {
     final var updatedAt = updatedTask.getUpdateTime();
 
     Assertions.assertTrue(task.getStatusTask());
+    Assertions.assertDoesNotThrow(() ->task.validate(new ThrowsValidationHandler()));
 
     final var actualTasks = task.notDone();
     final var actualUpdateAt = actualTasks.getUpdateTime();
@@ -199,6 +201,7 @@ public class TaskTest {
     final var updatedAt = task.getUpdateTime();
 
     Assertions.assertNull(task.getDeleteTime());
+    Assertions.assertDoesNotThrow(() ->task.validate(new ThrowsValidationHandler()));
 
     Thread.sleep(250);
     final var actualTask = task.delete();
@@ -208,5 +211,61 @@ public class TaskTest {
     Assertions.assertNotNull(task.getCreatedTime());
     Assertions.assertNotNull(task.getUpdateTime());
     Assertions.assertNotNull(task.getDeleteTime());
+  }
+
+
+  @Test
+  @DisplayName("givenAValidTask_whenCallUpdate_thenReturnTaskUpdated")
+  public void givenAValidTask_whenCallUpdate_thenReturnTaskUpdated() throws InterruptedException {
+    final var expectedName = "ler 10 paginas ";
+    final var expectedDescription = "false";
+    final var expectedValue = "10";
+
+    final var aTask = Task.newTask("Tasks", " task", "check");
+
+    Assertions.assertDoesNotThrow(() -> aTask.validate(new ThrowsValidationHandler()));
+
+    Thread.sleep(250);
+    final var updateAt = aTask.getUpdateTime();
+    final var createAt = aTask.getCreatedTime();
+
+    final var actualTask = aTask.update(expectedName,expectedDescription, expectedValue);
+
+    Assertions.assertDoesNotThrow(() -> actualTask.validate(new ThrowsValidationHandler()));
+
+    Assertions.assertEquals(aTask.getId(), actualTask.getId());
+    Assertions.assertEquals(createAt, actualTask.getCreatedTime());
+    Assertions.assertTrue(updateAt.isBefore(actualTask.getUpdateTime()));
+    Assertions.assertNull(actualTask.getDeleteTime());
+
+    Assertions.assertEquals(expectedName, actualTask.getName());
+    Assertions.assertEquals(expectedValue, actualTask.getValue());
+    Assertions.assertEquals(expectedDescription, actualTask.getDescription());
+  }
+
+  @Test
+  @DisplayName("givenAValidTask_whenCallUpdateWithInvalidParams_thenReturnTaskUpdated")
+  public void givenAValidTask_whenCallUpdateWithInvalidParams_thenReturnTaskUpdated(){
+    final String expectedName = null;
+    final var expectedDescription = "false";
+    final var expectedValue = "10";
+
+    final var aTask = Task.newTask("Tasks", " task", "check");
+
+    Assertions.assertDoesNotThrow(() -> aTask.validate(new ThrowsValidationHandler()));
+
+    final var updateAt = aTask.getUpdateTime();
+    final var createAt = aTask.getCreatedTime();
+
+    final var actualTask = aTask.update(expectedName,expectedDescription, expectedValue);
+
+    Assertions.assertEquals(aTask.getId(), actualTask.getId());
+    Assertions.assertEquals(createAt, actualTask.getCreatedTime());
+    Assertions.assertTrue(updateAt.isBefore(actualTask.getUpdateTime()));
+    Assertions.assertNull(actualTask.getDeleteTime());
+
+    Assertions.assertEquals(expectedName, actualTask.getName());
+    Assertions.assertEquals(expectedValue, actualTask.getValue());
+    Assertions.assertEquals(expectedDescription, actualTask.getDescription());
   }
 }
