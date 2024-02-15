@@ -5,7 +5,7 @@ import org.example.domain.validation.ValidationHandler;
 
 import java.time.Instant;
 
-public class Task extends AggregateRoot<TaskID> {
+public class Task extends AggregateRoot<TaskID> implements Cloneable {
   private String name;
   private String description;
   private Boolean statusTask;
@@ -93,5 +93,14 @@ public class Task extends AggregateRoot<TaskID> {
 
   public Instant getDeleteTime() {
     return deleteTime;
+  }
+
+  @Override
+  public Task clone() {
+    try {
+      return (Task) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError();
+    }
   }
 }

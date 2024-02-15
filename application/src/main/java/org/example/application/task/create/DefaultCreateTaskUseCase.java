@@ -16,10 +16,10 @@ public class DefaultCreateTaskUseCase extends CreateTaskUseCase{
   }
 
   @Override
-  public Either<Notification, CreateTaskOutput> execute(CreateTaskCommand command) {
-    var name = command.name();
-    var description = command.description();
-    var value = command.value();
+  public Either<Notification, CreateTaskOutput> execute(CreateTaskCommand inTask) {
+    var name = inTask.name();
+    var description = inTask.description();
+    var value = inTask.value();
 
     var notification = Notification.create();
 
