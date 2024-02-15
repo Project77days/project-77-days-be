@@ -43,7 +43,7 @@ public class UpdateTaskUseCaseTest {
     );
 
     when(taskGateway.findById(eq(expectedId)))
-      .thenReturn(Optional.of(aTask));
+      .thenReturn(Optional.of(aTask.clone()));
 
     when(taskGateway.update(any())).thenAnswer(returnsFirstArg());
 
