@@ -1,6 +1,5 @@
 package org.example.application.task.create;
 
-import org.example.domain.exceptions.DomainException;
 import org.example.domain.task.TaskGateway;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,7 +22,7 @@ public class CreateTaskUseCaseTest {
   private TaskGateway taskGateway;
 
   @Test
-  public void givenAValidCommand_WhenCallsCreateTAsks_shouldReturnTaskId(){
+  public void givenAValidCommand_WhenCallsCreateTasks_shouldReturnTaskId(){
     var expectName = "read 10 pages";
     var expectDescription = "read 10 pages";
     var expectedValue = "10";
